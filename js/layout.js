@@ -24,19 +24,24 @@ renderer.setSize(width, height);
 renderer.setPixelRatio(window.devicePixelRatio);
 
 
-// 初始化控制器
-let controls = new THREE.TrackballControls(camera, document.getElementById("Multilayer"));
-controls.rotateSpeed = 2.5;
-controls.zoomSpeed = 1.2;
-controls.panSpeed = 0.8;
-controls.noZoom = false;
-controls.noPan = false;
-controls.staticMoving = true;
-controls.dynamicDampingFactor = 0.3;
+/**判断设备类型  开始***/
+let controls;
+if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+    // 移动端操作
+    controls = new THREE.DeviceOrientationControls(camera);
 
-
-// let controls2 = new THREE.DeviceOrientationControls(camera);
-
+} else {
+    // PC端操作
+    controls = new THREE.TrackballControls(camera, document.getElementById("Multilayer"));
+    controls.rotateSpeed = 2.5;
+    controls.zoomSpeed = 1.2;
+    controls.panSpeed = 0.8;
+    controls.noZoom = false;
+    controls.noPan = false;
+    controls.staticMoving = true;
+    controls.dynamicDampingFactor = 0.3;
+}
+/**判断设备类型  结束***/
 
 // 设置辅助测试工具
 // 红色是x轴
@@ -62,7 +67,6 @@ function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
     controls.update();
-    // controls2.update();
 }
 
 animate();
