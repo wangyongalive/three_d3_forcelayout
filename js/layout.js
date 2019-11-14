@@ -7,9 +7,9 @@ let height = document.getElementById("Multilayer").offsetHeight;
 let scene = new THREE.Scene();
 // 初始化相机
 let camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);   //创建摄像机
-camera.position.z = 200;
-camera.position.x = 200;
-camera.position.y = 200;
+camera.position.z = 10;
+camera.position.x = 10;
+camera.position.y = 10;
 camera.lookAt(scene.position);
 
 // 设置环境光
@@ -35,7 +35,9 @@ controls.staticMoving = true;
 controls.dynamicDampingFactor = 0.3;
 
 
-let controls2 = new THREE.DeviceOrientationControls(camera);
+// let controls2 = new THREE.DeviceOrientationControls(camera);
+
+
 // 设置辅助测试工具
 // 红色是x轴
 // 绿色是y轴
@@ -60,7 +62,7 @@ function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
     controls.update();
-    controls2.update();
+    // controls2.update();
 }
 
 animate();
