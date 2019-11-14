@@ -47,10 +47,9 @@ document.getElementById("Multilayer").appendChild(renderer.domElement);
 
 // resize时间回调函数
 function onWindowResize() {
-    let self = this;
-    self.camera.aspect = self.width / self.height;
-    self.camera.updateProjectionMatrix();
-    self.renderer.setSize(self.width, self.height);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
 }
 
 window.addEventListener('resize', onWindowResize, false);
