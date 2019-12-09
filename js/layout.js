@@ -153,6 +153,8 @@ let links = d3.range(nodes.length - 1).map(function (i) {
     };
 });
 
+
+
 let meter = document.querySelector("#progress");
 let worker = new Worker("js/work.js");
 
@@ -178,7 +180,7 @@ function ticked(data) {
 }
 
 function getColor() {
-    return d3.scaleOrdinal(d3.schemeCategory10);
+    return d3.scaleOrdinal(d3.schemeCategory20);
 }
 
 let returnColor = getColor();
@@ -187,6 +189,7 @@ function ended(data) {
     let nodes = data.nodes,
         links = data.links;
     meter.style.display = "none";
+
     nodes.forEach(drawNode);
     links.forEach(drawLink);
     let x = [], y = [];
@@ -213,7 +216,8 @@ function drawLink(obj) {
 // 设置球面体
 function drawNode(obj) {
     let sphereGeometry = new THREE.SphereGeometry(R, 20, 20);
-    let sphereMaterial = new THREE.MeshLambertMaterial({color: returnColor(obj.index)});
+    // let sphereMaterial = new THREE.MeshLambertMaterial({color: returnColor(obj.index)});
+    let sphereMaterial = new THREE.MeshLambertMaterial({color: returnColor(obj.community)});
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphereGeometry.name = obj.index;
     sphere.position.x = obj.x;
@@ -294,7 +298,6 @@ function createHeatMap(nodes, width, height) {
         data: points
     };
     heatmapInstance.setData(data);
-    // console.log(data);
 }
 
 /**绘制热力图  结束**/
