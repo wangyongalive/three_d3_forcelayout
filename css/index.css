@@ -1,4 +1,6 @@
 html, body, #Multilayer {
+    margin: 0;
+    overflow: hidden;
     height: 100%;
     width: 100%;
 }

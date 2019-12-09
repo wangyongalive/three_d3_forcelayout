@@ -154,7 +154,6 @@ let links = d3.range(nodes.length - 1).map(function (i) {
 });
 
 
-
 let meter = document.querySelector("#progress");
 let worker = new Worker("js/work.js");
 
@@ -190,6 +189,8 @@ function ended(data) {
         links = data.links;
     meter.style.display = "none";
 
+    console.log(data);
+
     nodes.forEach(drawNode);
     links.forEach(drawLink);
     let x = [], y = [];
@@ -204,19 +205,33 @@ function ended(data) {
 
 function drawLink(obj) {
     // 设置线条
-    let material = new THREE.LineBasicMaterial({color: returnColor(obj.index)});
+    let material;
+    if (obj.border) {
+        material = new THREE.LineDashedMaterial({
+            color: 0xdddddd,
+            linewidth: 2,
+            scale: 1,
+            dashSize: 3,
+            gapSize: 1
+        });
+    } else {
+        material = new THREE.LineBasicMaterial({
+            color: 0xdddddd,
+            linewidth: 2
+        });
+    }
     let geometry = new THREE.Geometry();
     geometry.vertices.push(new THREE.Vector3(obj.source.x, obj.source.y, obj.source.z));
     geometry.vertices.push(new THREE.Vector3(obj.target.x, obj.target.y, obj.target.z));
     geometry.name = `source: ${obj.source.index}--> tartet: ${obj.target.index}`;
     let line = new THREE.Line(geometry, material);
+    line.computeLineDistances();
     scene.add(line);
 }
 
 // 设置球面体
 function drawNode(obj) {
     let sphereGeometry = new THREE.SphereGeometry(R, 20, 20);
-    // let sphereMaterial = new THREE.MeshLambertMaterial({color: returnColor(obj.index)});
     let sphereMaterial = new THREE.MeshLambertMaterial({color: returnColor(obj.community)});
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphereGeometry.name = obj.index;
@@ -229,7 +244,6 @@ function drawNode(obj) {
 // 绘制平面
 function drawPlane(width, height, nodes) {
     // 添加平面
-
     let border = R * 4; // 画布边界
     let planeGeometry = new THREE.PlaneGeometry(width + border, height + border, 10, 10);
     createHeatMap(nodes, width, height);
