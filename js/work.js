@@ -53,22 +53,11 @@ onmessage = function (event) {
                 return d.target.community
             }).filter(onlyUnique);
 
-            // let result = [...new Set(theseTargetModules.concat(theseSourceModules))];
-            //
-            // // if (theseSourceModules.length > 1 || theseTargetModules.length > 1) {
-            // if (result.length > 1) {
-            //     node.border = true;
-            // } else {
-            //     node.border = false;
-            // }
-
             if (theseSourceModules.length > 1 || theseTargetModules.length > 1) {
                 node.border = true;
             } else {
                 node.border = false;
             }
-
-
         });
     }
 
@@ -88,8 +77,8 @@ onmessage = function (event) {
         simulation.tick();
     }
 
+    // 注意计算的顺序
     modularityCensus(nodes, links);
-
     postMessage({type: "end", nodes: nodes, links: links});
     self.close();
 };

@@ -6,7 +6,6 @@ let height = container.offsetHeight;
 let controls;
 let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
-let _curObj = null;//当前点击物体
 let tooltip = document.getElementById("tooltip"); // 提示框
 let tween; // 补间动画
 const R = 5;
@@ -56,8 +55,8 @@ if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
 // 红色是x轴
 // 绿色是y轴
 // 蓝色是z轴
-let axes = new THREE.AxesHelper(100);
-scene.add(axes);
+// let axes = new THREE.AxesHelper(100);
+// scene.add(axes);
 
 let stats = new Stats();
 container.appendChild(stats.dom);
@@ -131,7 +130,9 @@ function render() {
 function animate() {
     requestAnimationFrame(animate);
     render();
-    controls.update();
+    let clock = new THREE.Clock();
+    let delta = clock.getDelta();
+    controls.update(delta);
     stats.update();
     TWEEN.update(); // 补间动画
 }
@@ -188,8 +189,6 @@ function ended(data) {
     let nodes = data.nodes,
         links = data.links;
     meter.style.display = "none";
-
-    console.log(data);
 
     nodes.forEach(drawNode);
     links.forEach(drawLink);
@@ -284,7 +283,6 @@ function animateCamera(p1, p2) {
 
 /**绘制热力图  开始**/
 function createHeatMap(nodes, width, height) {
-    // minimal heatmap instance configuration
     let container = document.createElement("div");
     let border = R * 4; // 画布边界
     container.style.width = width + border + "px";
@@ -296,18 +294,18 @@ function createHeatMap(nodes, width, height) {
         container: container,
         backgroundColor: 'rgb(37,37,37)',
     });
-    var points = [];
-    var max = 10;
+    let points = [];
+    let max = 10;
 
     for (let i = 0; i < nodes.length; i++) {
-        var point = {
+        let point = {
             x: Math.floor(nodes[i].x + width / 2),
             y: Math.floor(nodes[i].y + height / 2),
             value: 1
         };
         points.push(point);
     }
-    var data = {
+    let data = {
         max: max,
         data: points
     };
